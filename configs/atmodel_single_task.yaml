@@ -1,0 +1,357 @@
+# Define Test/Trainer/Saving
+PIPELINE: ATModelPipeline
+TRAINER: atmodel
+SAVE_DIR: "./save_dir"
+base_path: "./"
+
+# Resume Logistic
+RESUME: false
+WEIGHT: false
+RESET_DATA_LOADER: false
+RESUME_FROM: ''
+PYLEARN_MODEL: '' # model resume when evaluation
+DONT_LOAD_MODEL: false
+
+# Logging and Debug
+LOG_FILE: "logs.log"
+LOG_EVERY: 10
+FIND_UNUSED_PARAMETERS: false
+
+# Speed up training
+FP16: false
+PORT: '29500'
+
+# misc
+LOADER:
+  JOINT: True
+  KEY_DATASET: 'seg'
+
+##################
+# Task settings
+##################
+VERBOSE: true
+MODEL:
+  NAME: atmodel
+  HEAD: atmodel_head
+  MASK_ON: false
+  KEYPOINT_ON: false
+  LOAD_PROPOSALS: false
+  ALL_TASKS: true
+  DIM_PROJ: 256 # 512
+  BACKBONE_DIM: 384 # 768
+  TEXT:
+    ARCH: vlpencoder
+    NAME: transformer
+    TOKENIZER: clip
+    CONTEXT_LENGTH: 40 # 77
+    WIDTH: 256 # 512
+    HEADS: 8  # 8
+    LAYERS: 6 # 6
+    AUTOGRESSIVE: True
+  BACKBONE:
+    NAME: focal_dw
+    PRETRAINED: ''
+    LOAD_PRETRAINED: false
+    FOCAL:
+      PRETRAIN_IMG_SIZE: 224
+      PATCH_SIZE: 4
+      EMBED_DIM: 96
+      DEPTHS: [2, 2, 6, 2]
+      FOCAL_LEVELS: [3, 3, 3, 3]
+      FOCAL_WINDOWS: [3, 3, 3, 3]
+      DROP_PATH_RATE: 0.3
+      MLP_RATIO: 4.0
+      DROP_RATE: 0.0
+      PATCH_NORM: True
+      USE_CONV_EMBED: True
+      SCALING_MODULATOR: True
+      USE_CHECKPOINT: False
+      USE_POSTLN: true
+      USE_POSTLN_IN_MODULATION: false
+      USE_LAYERSCALE: True
+      OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+      OUT_INDICES: [0, 1, 2, 3]
+  ENCODER:
+    NAME: transformer_encoder_fpn
+    IGNORE_VALUE: 255
+    NUM_CLASSES: 133
+    LOSS_WEIGHT: 1.0
+    CONVS_DIM: 256  # 512
+    MASK_DIM: 256  # 512
+    NORM: "GN"
+    IN_FEATURES: ["res2", "res3", "res4", "res5"]
+    DEFORMABLE_TRANSFORMER_ENCODER_IN_FEATURES: ["res3", "res4", "res5"]
+    COMMON_STRIDE: 4
+    TRANSFORMER_ENC_LAYERS: 6
+  DECODER:
+    NAME: atmodel_decoder
+    TRANSFORMER_IN_FEATURE: "multi_scale_pixel_decoder"
+    MASK: True
+    CAPTIONING:
+      ENABLED: Fasle
+    VQA:
+      ENABLED: Fasle
+    DEPTH:
+      ENABLED: False
+    OCR:
+      ENABLED: False
+
+    VLP_STEP: 30
+    DEEP_SUPERVISION: True
+    NO_OBJECT_WEIGHT: 0.1
+    OCR_WEIGHT: 5.0
+    DEPTH_WEIGHT: 3.0
+    CAPTIONING_WEIGHT: 5.0
+    VQA_WEIGHT: 3.0
+    BACKBONER_WEIGHT: 8.0
+    CLASS_WEIGHT: 2.0
+    MASK_WEIGHT: 5.0
+    DICE_WEIGHT: 5.0
+    HIDDEN_DIM: 256 # 512
+    NUM_OBJECT_QUERIES: 101
+    NHEADS: 8
+    DROPOUT: 0.0
+    DIM_FEEDFORWARD: 1024
+    PRE_NORM: False
+    ENFORCE_INPUT_PROJ: False
+    SIZE_DIVISIBILITY: 32
+    TRAIN_NUM_POINTS: 12544
+    OVERSAMPLE_RATIO: 3.0
+    IMPORTANCE_SAMPLE_RATIO: 0.75
+    DEC_LAYERS: 7  # 9 decoder layers, add one for the loss on learnable query
+    TOP_MASK_LAYERS: 9
+    TOP_CAPTIONING_LAYERS: 3
+    TOP_VQA_LAYERS: 3
+    TOP_DEPTH_LAYERS: 3
+    TOP_OCR_LAYERS: 9
+    TEST:
+      SEMANTIC_ON: True
+      INSTANCE_ON: True
+      PANOPTIC_ON: True
+      OVERLAP_THRESHOLD: 0.8
+      OBJECT_MASK_THRESHOLD: 0.8
+      SEM_SEG_POSTPROCESSING_BEFORE_INFERENCE: false
+
+
+INPUT:
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+
+DATASETS:
+  # Train
+  # seg: ["ade20k_panoptic_train"]
+  # ocr: ["Syn90k_train"]
+  # depth: ["nyuv2_depth_train"]
+  # captioning: ["vizwiz_captioning_train"]
+  # vqa: ["vizwiz_vqa_train"]
+#  TRAIN: ["ade20k_panoptic_train", "Syn90k_train", "vizwiz_captioning_train", "vizwiz_vqa_train"]
+  TRAIN: ["ade20k_panoptic_train"]
+  # Test
+  # seg: ["ade20k_panoptic_val"]
+  # ocr: "CUTE80_val", "IC13_val", "IC15_val", "IIIT5K_val", "SVT_val", "SVTP_val"]
+  # depth: ["nyuv2_depth_val"]
+  # captioning: ["vizwiz_captioning_val", "vizwiz_captioning_test"]
+  # vqa: ["vizwiz_vqa_val", "vizwiz_vqa_test"]
+  # TEST: ["ocr_val"]
+  TEST: ["ade20k_panoptic_val"]
+  SIZE_DIVISIBILITY: 32
+  PROPOSAL_FILES_TRAIN: []
+
+GRADIENT_ACCUMULATE_STEP: 1
+
+DATALOADER:
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 16
+  LOAD_PROPOSALS: False
+  SAMPLER_TRAIN: "TrainingSampler"
+  ASPECT_RATIO_GROUPING: True
+
+# Detectron2 training config for optimizer and lr scheduler
+SOLVER:
+  BASE_LR: 0.0001
+  STEPS: [0.6, 0.8]
+#  STEPS: [0.88889, 0.96296]
+  MAX_ITER: 1
+  GAMMA: 0.1
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: "linear"
+  WEIGHT_DECAY: 0.05
+  OPTIMIZER: "ADAMW"
+  POLY_LR_POWER: 0.9
+  POLY_LR_CONSTANT_ENDING: 0.0
+  LR_SCHEDULER_NAME: "WarmupMultiStepLR"
+  LR_MULTIPLIER:
+    backbone: 0.1
+    lang_encoder: 0.1
+  WEIGHT_DECAY_NORM: 0.0
+  WEIGHT_DECAY_EMBED: 0.0
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 5.0 # 0.01
+    NORM_TYPE: 2.0
+  AMP:
+    ENABLED: True
+  MAX_NUM_EPOCHS: 50
+
+# Training Datasets
+ADE20K:
+  MULTI_DATASETS: False
+  TRAIN_DATASET_NAME: "ade20k_panoptic_train"
+  TEST_DATASET_NAME: "ade20k_panoptic_val"
+  INPUT:
+    MIN_SIZE_TRAIN: 640
+    MAX_SIZE_TRAIN: 2560
+    MIN_SIZE_TRAIN_SAMPLING: "choice"
+    MIN_SIZE_TEST: 640
+    MAX_SIZE_TEST: 2560
+    IMAGE_SIZE: [640, 640]
+    MIN_SCALE: 0.1
+    MAX_SCALE: 2.0
+    IGNORE_VALUE: 65535
+    RANDOM_FLIP: "horizontal"
+    MASK_FORMAT: "polygon"
+    COLOR_AUG_SSD: True
+    SIZE_DIVISIBILITY: 640
+    DATASET_MAPPER_NAME: "panoptic"
+    EVALUATOR_TYPE: "panoptic_seg"
+    FORMAT: "RGB"
+    CROP:
+      ENABLED: True
+      TYPE: "absolute"
+      SIZE: [ 640, 640 ]
+      SINGLE_CATEGORY_MAX_AREA: 1.0
+  DATASET:
+    DATASET: 'ade'
+  TRAIN:
+    ASPECT_RATIO_GROUPING: true
+    BATCH_SIZE_TOTAL: 2
+    BATCH_SIZE_PER_GPU: 2
+    SHUFFLE: true
+  TEST:
+    DETECTIONS_PER_IMAGE: 100
+    BATCH_SIZE_TOTAL: 4
+  DATALOADER:
+    FILTER_EMPTY_ANNOTATIONS: False
+    NUM_WORKERS: 16
+    LOAD_PROPOSALS: False
+    SAMPLER_TRAIN: "TrainingSampler"
+    ASPECT_RATIO_GROUPING: True
+
+VIZWIZ_CAPTIONING:
+  MULTI_DATASETS: False
+  TRAIN_DATASET_NAME: "vizwiz_captioning_train"
+  TEST_DATASET_NAME: "vizwiz_captioning_val"
+  INPUT:
+    IMAGE_SIZE: [480, 640]
+    DATASET_MAPPER_NAME: "cap"
+    EVALUATOR_TYPE: "captioning"
+    IGNORE_VALUE: 255
+    COLOR_AUG_SSD: False
+    SIZE_DIVISIBILITY: 32
+    MASK_FORMAT: "polygon"
+    FORMAT: "RGB"
+    CROP:
+      ENABLED: True
+  TRAIN:
+    BATCH_SIZE_TOTAL: 2
+    BATCH_SIZE_PER_GPU: 2
+  TEST:
+    BATCH_SIZE_TOTAL: 4
+  DATALOADER:
+    FILTER_EMPTY_ANNOTATIONS: False
+    NUM_WORKERS: 16
+    LOAD_PROPOSALS: False
+    SAMPLER_TRAIN: "TrainingSampler"
+    ASPECT_RATIO_GROUPING: True
+
+VIZWIZ_VQA:
+  MULTI_DATASETS: False
+  TRAIN_DATASET_NAME: "vizwiz_vqa_train"
+  TEST_DATASET_NAME: "vizwiz_vqa_val"
+  INPUT:
+    IMAGE_SIZE: [480, 640]
+    DATASET_MAPPER_NAME: "vqa"
+    EVALUATOR_TYPE: "vqa"
+    SIZE_DIVISIBILITY: 32
+    FORMAT: "RGB"
+    PATH_VOCABS: "vqa_datasets/vizwiz/prepro_data/vocabs_all.json"
+  TRAIN:
+    BATCH_SIZE_TOTAL: 2
+    BATCH_SIZE_PER_GPU: 2
+  TEST:
+    BATCH_SIZE_TOTAL: 4
+  DATALOADER:
+    FILTER_EMPTY_ANNOTATIONS: False
+    NUM_WORKERS: 16
+    LOAD_PROPOSALS: False
+    SAMPLER_TRAIN: "TrainingSampler"
+    ASPECT_RATIO_GROUPING: True
+
+NYU_V2:
+  MULTI_DATASETS: False
+  TRAIN_DATASET_NAME: "nyuv2_depth_train"
+  TEST_DATASET_NAME: "nyuv2_depth_val"
+  INPUT:
+    IMAGE_SIZE: [480, 640]
+    MIN_SCALE: 0.1
+    MAX_SCALE: 2.0
+    ANGLE: [-45, 45]
+    MAX_DEPTH: 10.0
+    CROP_SIZE: [448, 576]
+    RANDOM_FLIP: "horizontal"
+    COLOR_AUG_SSD: True
+    DATASET_MAPPER_NAME: "depth"
+    EVALUATOR_TYPE: "depth"
+    FORMAT: "RGB"
+  TRAIN:
+    BATCH_SIZE_TOTAL: 2
+    BATCH_SIZE_PER_GPU: 2
+  TEST:
+    BATCH_SIZE_TOTAL: 4
+  DATALOADER:
+    FILTER_EMPTY_ANNOTATIONS: False
+    NUM_WORKERS: 16
+    LOAD_PROPOSALS: False
+    SAMPLER_TRAIN: "TrainingSampler"
+    ASPECT_RATIO_GROUPING: True
+
+OCR:
+  MULTI_DATASETS: True
+  TRAIN_DATASET_NAME: [
+    "mj_val",
+    "mj_test",]
+  TEST_DATASET_NAME: [
+    "iiit50_3000",
+    "svt",
+    "svtp",
+    "ic13",
+    "ic15",
+    "cute80"]
+  INPUT:
+    IMAGE_SIZE: [32, 128]
+    ROTATION_ANGLE: 15
+    DATASET_MAPPER_NAME: "ocr"
+    EVALUATOR_TYPE: "ocr"
+    CHARSET_PATH: "atmodel_data/ocr_datasets/data/charset_vn.txt"
+    FORMAT: "RGB"
+    DATA_AUG: True
+    CHECK_LENGTH: True
+    CONVERT_MODE: "RGB"
+    MULTISCALES: True
+  TRAIN:
+    BATCH_SIZE_TOTAL: 2
+    BATCH_SIZE_PER_GPU: 2
+  TEST:
+    BATCH_SIZE_TOTAL: 2
+  DATALOADER:
+    FILTER_EMPTY_ANNOTATIONS: False
+    NUM_WORKERS: 16
+    LOAD_PROPOSALS: False
+    SAMPLER_TRAIN: "TrainingSampler"
+    ASPECT_RATIO_GROUPING: True
+
+
+
+
