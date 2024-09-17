@@ -1,0 +1,39 @@
+pillow==9.4.0
+opencv-python
+pyyaml
+json_tricks
+yacs
+scikit-learn
+pandas
+timm==0.4.12
+numpy==1.23.5
+einops
+fvcore
+transformers==4.19.2
+sentencepiece
+ftfy
+regex
+nltk
+vision-datasets==0.2.2
+pycocotools
+diffdist
+pyarrow
+cityscapesscripts
+shapely
+scikit-image
+mup
+gradio==3.13.2
+scann
+kornia
+torchmetrics==0.6.0
+mpi4py
+fastai==1.0.60
+deepspeed==
+infinibatch@git+https://github.com/microsoft/infinibatch.git#egg=infinibatch
+
+安装环境:
+conda create --name yourEnv python=3.8
+pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
+python -m pip install -r requirements.txt
+mpi4py库需要conda装: conda install mpi4py
+
