@@ -1,7 +1,7 @@
 # Preparing Dataset
 
 ATModel can perform 5 tasks simultaneously, namely Panoptic Segmentation, Captioning, VQA, Depth Estimation and OCR.
-Below are the details of the datasets of different tasks.
+Below are the details of the datasets for different tasks.
 
 ```sh
 Panoptic Segmentation -> ADE20K
@@ -12,7 +12,8 @@ OCR -> MJSynth(MJ), SynthText (ST), ICDAR_2013(IC13), ICDAR_2015 (IC15), IIIT5K-
 ```
 
 
-## Panoptic Segmentation
+## Panoptic Segmentation 
+Expected dataset structure for [ADE20K](http://sceneparsing.csail.mit.edu/)
 ```
 .atmodel_data/
 └── seg_datatsets/ADEChallengeData2016/
@@ -34,7 +35,7 @@ OCR -> MJSynth(MJ), SynthText (ST), ICDAR_2013(IC13), ICDAR_2015 (IC15), IIIT5K-
 ```
 
 ## Captioning
-
+Expected dataset structure for [VizWiz_Cap](https://vizwiz.org/tasks-and-datasets/image-captioning/)
 ```
 .atmodel_data/
 └── captioning_datasets/vizwiz/
@@ -54,7 +55,7 @@ OCR -> MJSynth(MJ), SynthText (ST), ICDAR_2013(IC13), ICDAR_2015 (IC15), IIIT5K-
 ```
 
 ## VQA
-
+Expected dataset structure for [VizWiz_VQA](https://vizwiz.org/tasks-and-datasets/vqa/)
 ```
 .atmodel_data/
 └── vqa_datasets/vizwiz/
@@ -74,7 +75,7 @@ OCR -> MJSynth(MJ), SynthText (ST), ICDAR_2013(IC13), ICDAR_2015 (IC15), IIIT5K-
 ```
 
 ## Depth Estimation
-
+Please follow the [BTS](https://github.com/cleinc/bts/tree/master/pytorch) to download the NYU_v2 dataset and prepare the dataset as below.
 ```
 .atmodel_data/
 └── captioning_datasets/vizwiz/
@@ -89,7 +90,7 @@ OCR -> MJSynth(MJ), SynthText (ST), ICDAR_2013(IC13), ICDAR_2015 (IC15), IIIT5K-
 ```
 
 ## OCR
-
+Please follow the [ABINet](https://github.com/FangShancheng/ABINet) to download the NYU_v2 dataset and prepare the dataset as below.
 ```
 .atmodel_data/
 └── ocr_datasets
