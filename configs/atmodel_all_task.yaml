@@ -318,6 +318,7 @@ NYU_V2:
 OCR:
   MULTI_DATASETS: True
   TRAIN_DATASET_NAME: [
+    "mj_train",
     "mj_val",
     "mj_test",]
   TEST_DATASET_NAME: [
