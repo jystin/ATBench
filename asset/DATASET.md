@@ -78,7 +78,7 @@ Expected dataset structure for [VizWiz_VQA](https://vizwiz.org/tasks-and-dataset
 Please follow the [BTS](https://github.com/cleinc/bts/tree/master/pytorch) to download the NYU_v2 dataset and prepare the dataset as below.
 ```
 .atmodel_data/
-└── captioning_datasets/vizwiz/
+└── depth_datasets/nyuv2/
     └── images/
         ├── 0.jpg
         ├── ...
