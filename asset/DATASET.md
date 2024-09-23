@@ -90,7 +90,7 @@ Please follow the [BTS](https://github.com/cleinc/bts/tree/master/pytorch) to do
 ```
 
 ## OCR
-Please follow the [ABINet](https://github.com/FangShancheng/ABINet) to download the NYU_v2 dataset and prepare the dataset as below.
+Please follow the [ABINet](https://github.com/FangShancheng/ABINet) to download the OCR datasets and prepare the datasets as below.
 ```
 .atmodel_data/
 └── ocr_datasets

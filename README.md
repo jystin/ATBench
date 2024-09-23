@@ -1,5 +1,5 @@
 # @BENCH: Are Vision-Language Models Ready for Assistive Technology?
-\[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](https://arxiv.org/pdf/2212.11270.pdf)\]
+\[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](---)\]
 
 by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger;](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
 
@@ -7,8 +7,8 @@ by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*]
 
 ## News
 
-* **[2024.09.17]** ATBench is accepted to WACV2025.
-* **[2024.09.17]** We are excited to release the @model training code ([INSTALL.md](asset/INSTALL.md), [DATASET.md](asset/DATASET.md), [TRAIN.md](asset/TRAIN.md), [EVALUATION.md](asset/EVALUATION.md))
+* **[2024.09.17]** ATBench (Assistive Technology Benchmark) is accepted to WACV2025.
+* **[2024.09.17]** We are excited to release ATModel (Assistive Technology Model) training code ([INSTALL.md](asset/INSTALL.md), [DATASET.md](asset/DATASET.md), [TRAIN.md](asset/TRAIN.md), [EVALUATION.md](asset/EVALUATION.md))
 
 <!-- <p align="center">
   <img src="/images/pipeline.png" width="90%" height="90%">
@@ -19,8 +19,8 @@ by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*]
 
 ![multi_task_result](/images/multi_task_result.png)
 
-@Bench is designed by a pre-design user study with PVIs, including five five most crucial vision-language tasks: **Panoptic Segmentation**, **Image Captioning**, **Visual Question Answering (VQA)**, **Depth Estimation**, **Optical Character Recognition (OCR)**. And we also proposed a novel
-@Model that can address all tasks simultaneously.
+ATBench is designed by a pre-design user study with PVIs, including five five most crucial vision-language tasks: **Panoptic Segmentation**, **Image Captioning**, **Visual Question Answering (VQA)**, **Depth Estimation**, **Optical Character Recognition (OCR)**. And we also proposed a novel
+ATModel that can address all tasks simultaneously.
 
 More detailed can be found in our [arxiv](-------) paper.
 
@@ -36,9 +36,9 @@ More detailed can be found in our [arxiv](-------) paper.
 | X-Decoder (T)   | 41.6             | -               | -                        | -                   | -                    | 164M    | 
 | GIT (T)         | -                | -               | -                        | 113.1               | 68.0                 | 0.7B    | 
 | PaLI (T)        | -                |  -              | -                        | 117.2               | 67.5                 | 3.0B    | 
-| [@Model](http:) | 38.5             | 0.425           | 80.1                     | 52.5                | 53.7                 | 62M     | 
+| [ATModel](http:) | 38.5             | 0.425           | 80.1                     | 52.5                | 53.7                 | 62M     | 
 
-**Installation, Dataset, Training and Evaluation Guide**
+**Installation, Dataset, Training and Evaluation Guide:**
 * [INSTALL.md](asset/INSTALL.md)
 * [DATASET.md](asset/DATASET.md)
 * [TRAIN.md](asset/TRAIN.md)
