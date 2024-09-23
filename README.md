@@ -1,9 +1,9 @@
 # @BENCH: Are Vision-Language Models Ready for Assistive Technology?
 \[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](https://arxiv.org/pdf/2212.11270.pdf)\]
 
-by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
+by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger;](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
 
-\* denotes equal contribution and &dagger denotes corresponding author 
+\* denotes equal contribution and &dagger; denotes corresponding author 
 
 ## News
 
