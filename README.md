@@ -1,9 +1,9 @@
 # @BENCH: Are Vision-Language Models Ready for Assistive Technology?
-\[[Paper](https://arxiv.org/pdf/2212.11270.pdf)\]
+\[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](https://arxiv.org/pdf/2212.11270.pdf)\]
 
-by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), Jiahang Li, [Jiaming Zhang](https://jamycheung.github.io/)$\dag$, [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
+by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
 
-\* denotes equal contribution and $\dag$ denotes corresponding author 
+\* denotes equal contribution and &dagger denotes corresponding author 
 
 ## News
 
@@ -48,6 +48,12 @@ More detailed can be found in our [arxiv](-------) paper.
 * We build our work on top of [X-Decoder](https://github.com/microsoft/X-Decoder) and use their code. We appreciate the previous open-source repository [X-Decoder](https://github.com/microsoft/X-Decoder).
 
 ## Citation
+If you find our work useful in your research, please cite:
 ```
-
+@inproceedings{jiang2025atbench,
+title={@BENCH: Benchmarking Vision-Language Models for Human-centered Assistive Technology},
+author={Jiang, Xin and Zheng, Junwei and Liu, Ruiping and Li, Jiahang and Zhang, Jiaming and Matthiesen, Sven and Stiefelhagen, Rainer},
+booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+year={2025}
+}
 ```
