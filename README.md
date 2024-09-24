@@ -1,5 +1,5 @@
 # @BENCH: Benchmarking Vision-Language Models for Human-centered Assistive Technology
-\[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](---)\]
+\[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](https://arxiv.org/abs/2409.14215)\]
 
 by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger;](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
 
@@ -22,7 +22,7 @@ by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*]
 ATBench is designed by a pre-design user study with PVIs, including five five most crucial vision-language tasks: **Panoptic Segmentation**, **Image Captioning**, **Visual Question Answering (VQA)**, **Depth Estimation**, **Optical Character Recognition (OCR)**. And we also proposed a novel
 ATModel that can address all tasks simultaneously.
 
-More detailed can be found in our [arxiv](-------) paper.
+More detailed can be found in our [arxiv](https://arxiv.org/abs/2409.14215) paper.
 
 ## Getting Started
 **Checkpoints and Numbers:**
