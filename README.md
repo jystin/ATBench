@@ -36,7 +36,7 @@ More detailed can be found in our [arxiv](https://arxiv.org/abs/2409.14215) pape
 | X-Decoder (T)   | 41.6             | -               | -                        | -                   | -                    | 164M    | 
 | GIT (T)         | -                | -               | -                        | 113.1               | 68.0                 | 0.7B    | 
 | PaLI (T)        | -                |  -              | -                        | 117.2               | 67.5                 | 3.0B    | 
-| [ATModel](http:) | 38.5             | 0.425           | 80.1                     | 52.5                | 53.7                 | 62M     | 
+| ATModel | 38.5             | 0.425           | 80.1                     | 52.5                | 53.7                 | 62M     | 
 
 **Installation, Dataset, Training and Evaluation Guide:**
 * [INSTALL.md](asset/INSTALL.md)
