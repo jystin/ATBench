@@ -28,12 +28,6 @@ kornia
 torchmetrics==0.6.0
 mpi4py
 fastai==1.0.60
-deepspeed==
-infinibatch@git+https://github.com/microsoft/infinibatch.git#egg=infinibatch
+deepspeed==infinibatch@git+https://github.com/microsoft/infinibatch.git#egg=infinibatch
 
-安装环境:
-conda create --name yourEnv python=3.8
-pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
-python -m pip install -r requirements.txt
-mpi4py库需要conda装: conda install mpi4py
 
