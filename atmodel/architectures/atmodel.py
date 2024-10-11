@@ -15,7 +15,7 @@ from detectron2.data import MetadataCatalog
 from .registry import register_model
 from ..utils import configurable, get_class_names
 from ..backbone import build_backbone, Backbone
-from ..body import build_atmodel_head
+from ..body import build_sem_seg_head
 from ..modules import sem_seg_postprocess, SetCriterion, HungarianMatcher, AutomaticWeightedLoss, bbox_postprocess
 from ..language import build_language_encoder
 from ..language.loss import vl_similarity, image_text_contrastive_loss_queue
@@ -33,7 +33,7 @@ class ATModel(nn.Module):
         self,
         *,
         backbone: Backbone,
-        atmodel_head: nn.Module,
+        sem_seg_head: nn.Module,
         criterion: nn.Module,
         losses: dict,
         num_queries: int,
@@ -56,7 +56,7 @@ class ATModel(nn.Module):
         """
         Args:
             backbone: a backbone module, must follow detectron2's backbone interface
-            atmodel_head: a module that predicts semantic segmentation from backbone features
+            sem_seg_head: a module that predicts semantic segmentation from backbone features
             criterion: a module that defines the loss
             num_queries: int, number of queries
             object_mask_threshold: float, threshold to filter query based on classification score
@@ -79,7 +79,7 @@ class ATModel(nn.Module):
         """
         super().__init__()
         self.backbone = backbone
-        self.atmodel_head = atmodel_head
+        self.sem_seg_head = sem_seg_head
         self.criterion = criterion
         self.losses = losses
         self.num_queries = num_queries  # 101
@@ -144,7 +144,7 @@ class ATModel(nn.Module):
         extra = {'task_switch': task_switch}
         backbone = build_backbone(cfg)  # focal_dw for image encode
         lang_encoder = build_language_encoder(cfg)  # vlpencoder text encoder
-        atmodel_head = build_atmodel_head(cfg, backbone.output_shape(), lang_encoder, extra)
+        sem_seg_head = build_sem_seg_head(cfg, backbone.output_shape(), lang_encoder, extra)
 
         # building criterion
         matcher = HungarianMatcher(
@@ -192,7 +192,7 @@ class ATModel(nn.Module):
 
         # generate critenrion for loss function.
         criterion = SetCriterion(
-            atmodel_head.num_classes,
+            sem_seg_head.num_classes,
             matcher=matcher,
             weight_dict=weight_dict,
             top_x_layers=top_x_layers,
@@ -208,7 +208,7 @@ class ATModel(nn.Module):
 
         return {
             "backbone": backbone,
-            "atmodel_head": atmodel_head,
+            "sem_seg_head": sem_seg_head,
             "criterion": criterion,
             "losses": losses,
             "num_queries": dec_cfg['NUM_OBJECT_QUERIES'],
@@ -309,7 +309,7 @@ class ATModel(nn.Module):
         images = ImageList.from_tensors(images, self.size_divisibility)  # pad
 
         # text embedding (num_clses, 512)
-        self.atmodel_head.predictor.lang_encoder.get_text_embeddings(self.train_class_names, is_eval=False)
+        self.sem_seg_head.predictor.lang_encoder.get_text_embeddings(self.train_class_names, is_eval=False)
 
         extra = {}
         # mask classification target
@@ -319,7 +319,7 @@ class ATModel(nn.Module):
 
 
         features = self.backbone(images.tensor)  # FPN multi-scale features
-        outputs = self.atmodel_head(features, target_vlp=targets_vlp, task=task, extra=extra)
+        outputs = self.sem_seg_head(features, target_vlp=targets_vlp, task=task, extra=extra)
 
         _outputs = {}
         for key, value in outputs.items():
@@ -338,8 +338,8 @@ class ATModel(nn.Module):
                         elif _key == 'pred_masks':
                             _outputs[key][i][_key] = _value[:,:self.num_queries-1]
         outputs = _outputs
-        extra = {'lang_logit': self.atmodel_head.predictor.lang_encoder.logit_scale,
-                 'class_embeddings': getattr(self.atmodel_head.predictor.lang_encoder, '{}_text_embeddings'.format('default'))}
+        extra = {'lang_logit': self.sem_seg_head.predictor.lang_encoder.logit_scale,
+                 'class_embeddings': getattr(self.sem_seg_head.predictor.lang_encoder, '{}_text_embeddings'.format('default'))}
 
         # bipartite matching-based loss
         self.criterion.losses = self.losses['seg'] # seg criterion losses
@@ -356,7 +356,7 @@ class ATModel(nn.Module):
 
         targets_vlp = self.prepare_vlp_targets(batched_inputs, images.tensor.device)
 
-        token_embedding = self.atmodel_head.predictor.lang_encoder.lang_encoder.token_embedding
+        token_embedding = self.sem_seg_head.predictor.lang_encoder.lang_encoder.token_embedding
 
         ocr_restrict_ids = torch.tensor([49406, 271, 272, 273, 274, 275, 276, 277, 278, 279,
                         280, 320, 321, 322, 323, 324, 325, 326, 327, 328,
@@ -364,12 +364,12 @@ class ATModel(nn.Module):
                         339, 340, 341, 342, 343, 344, 345, 49407], device=self.device)
 
         extra = {"token_embedding": token_embedding,
-                 "lang_encoder": self.atmodel_head.predictor.lang_encoder,
+                 "lang_encoder": self.sem_seg_head.predictor.lang_encoder,
                  "training": self.training,
                  "ocr_restrict_ids": ocr_restrict_ids}
 
         features = self.backbone(images.tensor)
-        outputs = self.atmodel_head(features, target_queries=None, target_vlp=targets_vlp, task=task, extra=extra)
+        outputs = self.sem_seg_head(features, target_queries=None, target_vlp=targets_vlp, task=task, extra=extra)
 
         for key, value in outputs.items():
             if key == 'pred_vlp':
@@ -408,7 +408,7 @@ class ATModel(nn.Module):
         targets_vlp = self.prepare_vlp_targets(batched_inputs, images.tensor.device, answers=False)
 
         features = self.backbone(images.tensor)  # FPN 多尺度特征
-        outputs = self.atmodel_head(features, target_vlp=targets_vlp, task="depth", extra=extra)
+        outputs = self.sem_seg_head(features, target_vlp=targets_vlp, task="depth", extra=extra)
 
         _outputs = {}
         for key, value in outputs.items():
@@ -441,7 +441,7 @@ class ATModel(nn.Module):
 
         targets = targets_grounding = queries_grounding = None
         features = self.backbone(images.tensor)
-        outputs = self.atmodel_head(features, target_vlp=targets_vlp, target_queries=queries_grounding)
+        outputs = self.sem_seg_head(features, target_vlp=targets_vlp, target_queries=queries_grounding)
 
         mask_cls_results = outputs["pred_logits"]
         mask_pred_results = outputs["pred_masks"]
@@ -505,7 +505,7 @@ class ATModel(nn.Module):
         extra = {"depth_max_depth": depth_max_depth}
 
         features = self.backbone(images.tensor)
-        outputs = self.atmodel_head(features, target_queries=queries_grounding, target_vlp=targets_vlp, task="depth", extra=extra)
+        outputs = self.sem_seg_head(features, target_queries=queries_grounding, target_vlp=targets_vlp, task="depth", extra=extra)
 
         depth_map_results = outputs["pred_depth"]
 
@@ -539,7 +539,7 @@ class ATModel(nn.Module):
         if 'vlp_mask' in batched_inputs[-1]:
             vlp_mask = torch.cat([x['vlp_mask'] for x in batched_inputs])
 
-        outputs = self.atmodel_head(features, target_queries=queries_grounding, task=task, target_vlp=targets_vlp,
+        outputs = self.sem_seg_head(features, target_queries=queries_grounding, task=task, target_vlp=targets_vlp,
                                     extra={'start_token': self.start_token,
                                            'vlp_mask': vlp_mask,
                                            'ocr_restrict_ids': ocr_restrict_ids,})
@@ -590,11 +590,11 @@ class ATModel(nn.Module):
             answer_attention_mask = torch.stack(answer_attention_mask)
 
         question_tokens = {"input_ids": question_input_ids, "attention_mask": question_attention_mask}
-        question_lang_results = self.atmodel_head.predictor.lang_encoder.get_text_token_embeddings(question_tokens,
+        question_lang_results = self.sem_seg_head.predictor.lang_encoder.get_text_token_embeddings(question_tokens,
                                                                                                    token=True)
         if answers:
             answer_tokens = {"input_ids": answer_input_ids, "attention_mask": answer_attention_mask}
-            answer_lang_results = self.atmodel_head.predictor.lang_encoder.get_text_token_embeddings(answer_tokens,
+            answer_lang_results = self.sem_seg_head.predictor.lang_encoder.get_text_token_embeddings(answer_tokens,
                                                                                                  token=True)
 
         target_vlp = []
@@ -646,7 +646,7 @@ class ATModel(nn.Module):
         scores, labels = F.softmax(mask_cls, dim=-1).max(-1)
         mask_pred = mask_pred.sigmoid()  # qhw
 
-        keep = labels.ne(self.atmodel_head.num_classes) & (scores > self.object_mask_threshold)
+        keep = labels.ne(self.sem_seg_head.num_classes) & (scores > self.object_mask_threshold)
 
         cur_scores = scores[keep]
         cur_classes = labels[keep]
@@ -707,13 +707,13 @@ class ATModel(nn.Module):
 
         # [Q, K]
         scores = F.softmax(mask_cls, dim=-1)[:, :-1]
-        labels = torch.arange(self.atmodel_head.num_classes, device=self.device).unsqueeze(0).repeat(self.num_queries, 1).flatten(0, 1)
+        labels = torch.arange(self.sem_seg_head.num_classes, device=self.device).unsqueeze(0).repeat(self.num_queries, 1).flatten(0, 1)
         # scores_per_image, topk_indices = scores.flatten(0, 1).topk(self.num_queries, sorted=False)
         scores_per_image, topk_indices = scores.flatten(0, 1).topk(self.test_topk_per_image, sorted=False)
 
         labels_per_image = labels[topk_indices]
-        topk_indices = (topk_indices // self.atmodel_head.num_classes)
-        # mask_pred = mask_pred.unsqueeze(1).repeat(1, self.atmodel_head.num_classes, 1).flatten(0, 1)
+        topk_indices = (topk_indices // self.sem_seg_head.num_classes)
+        # mask_pred = mask_pred.unsqueeze(1).repeat(1, self.sem_seg_head.num_classes, 1).flatten(0, 1)
         mask_pred = mask_pred[topk_indices]
         if box_pred is not None:
             box_pred = box_pred[topk_indices]

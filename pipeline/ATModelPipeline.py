@@ -123,8 +123,8 @@ class ATModelPipeline:
                     eval_type = "ocr"
                 else:
                     eval_type = model.model.metadata.evaluator_type
-                model.model.atmodel_head.num_classes = len(names) - 1
-                model.model.atmodel_head.predictor.lang_encoder.get_text_embeddings(names, is_eval=True)
+                model.model.sem_seg_head.num_classes = len(names) - 1
+                model.model.sem_seg_head.predictor.lang_encoder.get_text_embeddings(names, is_eval=True)
                 hook_switcher(model, dataset_label)
                 total = len(eval_batch_gen)
                 num_warmup = min(5, total - 1)
@@ -186,6 +186,6 @@ class ATModelPipeline:
                 scores["{}/{}".format(dataset_label, eval_type)] = results
 
         # set back to training stat.
-        model.model.atmodel_head.num_classes = self._opt['MODEL']['ENCODER']['NUM_CLASSES']
+        model.model.sem_seg_head.num_classes = self._opt['MODEL']['ENCODER']['NUM_CLASSES']
         model.model.metadata = MetadataCatalog.get(self._opt['DATASETS']['TRAIN'][0])
         return scores

@@ -26,8 +26,9 @@ gradio==3.13.2
 scann
 kornia
 torchmetrics==0.6.0
-mpi4py
 fastai==1.0.60
-deepspeed==infinibatch@git+https://github.com/microsoft/infinibatch.git#egg=infinibatch
+infinibatch@git+https://github.com/microsoft/infinibatch.git#egg=infinibatch
+deepspeed==0.10.3
+mpi4py
 
 

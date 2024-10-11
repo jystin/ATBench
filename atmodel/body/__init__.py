@@ -1,1 +1,1 @@
-from .build import build_atmodel_head
+from .build import build_sem_seg_head
