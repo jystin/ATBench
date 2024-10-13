@@ -287,8 +287,8 @@ class DefaultTrainer(UtilsTrainer, DistributedTrainer):
                                         f"epoch remaining[{str((datetime.now() - epoch_start_time) / (batch_idx + 1) * (self.train_params['updates_per_epoch'] - batch_idx - 1)).split('.')[0]}]")
 
                 # evaluate and save ckpt every epoch
-                # if batch_idx + 1 == self.train_params["updates_per_epoch"]:
-                if batch_idx == 3:
+                if batch_idx + 1 == self.train_params["updates_per_epoch"]:
+                # if batch_idx == 3:
                     self.save_checkpoint(f"epochs_{epoch}")
                     results = self._eval_on_set(self.save_folder)
                     break
