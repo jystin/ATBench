@@ -1,3 +1,4 @@
+# Modified by Xin Jiang from Xdecoder (https://arxiv.org/pdf/2212.11270.pdf)
 from typing import Tuple
 import random
 

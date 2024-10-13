@@ -107,7 +107,7 @@ def labels_40(root):
 
 
 def main():
-    root = "../xdecoder_data/depth_datasets/nyuv2"
+    root = "../atmodel_data/depth_datasets/nyuv2"
     extract_data(root)
     # split(root)
     # labels_40(root)
@@ -115,8 +115,8 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # img = Image.open('../xdecoder_data/nyu_v2/depths/0.png')
-    # img2 = Image.open('../xdecoder_data/nyu_v2/raw_depths/0.png')
+    # img = Image.open('../atmodel_data/nyu_v2/depths/0.png')
+    # img2 = Image.open('../atmodel_data/nyu_v2/raw_depths/0.png')
     # img = np.array(img)
     # img2 = np.array(img2)
     # max = img.max()

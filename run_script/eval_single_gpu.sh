@@ -1,6 +1,6 @@
-export PYTHONPATH=$PYTHONPATH:xdecoder_data/eval_utils/coco
-export PYTHONPATH=$PYTHONPATH:xdecoder_data/eval_utils/vizwiz
-export DATASET=xdecoder_data
+export PYTHONPATH=$PYTHONPATH:atmodel_data/eval_utils/coco
+export PYTHONPATH=$PYTHONPATH:atmodel_data/eval_utils/vizwiz
+export DATASET=atmodel_data
 python -c "import nltk; nltk.download('punkt'); nltk.download('averaged_perceptron_tagger')"
 cd ..
 
@@ -14,7 +14,7 @@ save_dir="logs/eval_mask"${mask}"_cap"${captioning}"_vqa"${vqa}"_depth"${depth}"
 log_file="logs.log"
 
 CUDA_VISIBLE_DEVICES=0 python entry.py evaluate \
-            --conf_files configs/xdecoder/super_tiny_alltasks.yaml \
+            --conf_files configs/atmodel_single_task.yaml \
             --overrides \
             MODEL.DECODER.MASK ${mask} \
             MODEL.DECODER.CAPTIONING.ENABLED ${captioning} \
