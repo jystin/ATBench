@@ -52,7 +52,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 torchrun --nproc_per_node=4 entry.py train \
             VIZWIZ_VQA.TRAIN.BATCH_SIZE_PER_GPU 1 \
             FP16 True \
             WEIGHT False \
-            RESUME_FROM checkpoints/focalt_unicl_pretrain.pt \
+            RESUME_FROM  \
             SOLVER.MAX_NUM_EPOCHS ${max_epoch} \
             SOLVER.BASE_LR ${lr} \
             SAVE_DIR ${save_dir} \

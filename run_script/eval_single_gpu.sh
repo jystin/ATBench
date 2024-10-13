@@ -27,6 +27,6 @@ CUDA_VISIBLE_DEVICES=0 python entry.py evaluate \
             MODEL.DECODER.TEST.PANOPTIC_ON True \
             FP16 True \
             WEIGHT True \
-            RESUME_FROM logs/epochs30_lr0.0001_keyDatasetseg_maskTrue_captioningTrue_vqaFalse_depthTrue_ocrTrue20231019101759/00101040/default/model_state_dict.pth \
+            RESUME_FROM checkpoints/best_SEG.pt \
             SAVE_DIR ${save_dir} \
             LOG_FILE ${log_file}
