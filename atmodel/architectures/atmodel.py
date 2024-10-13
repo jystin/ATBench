@@ -407,7 +407,7 @@ class ATModel(nn.Module):
 
         targets_vlp = self.prepare_vlp_targets(batched_inputs, images.tensor.device, answers=False)
 
-        features = self.backbone(images.tensor)  # FPN 多尺度特征
+        features = self.backbone(images.tensor)  # FPN 
         outputs = self.sem_seg_head(features, target_vlp=targets_vlp, task="depth", extra=extra)
 
         _outputs = {}

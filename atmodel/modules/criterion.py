@@ -192,17 +192,6 @@ class SetCriterion(nn.Module):
             src_logits.shape[:2], self.num_classes, dtype=torch.int64, device=src_logits.device
         )
         target_classes[idx] = target_classes_o
-        """
-        tensor([[150, 150, 150, 150, 150, 150, 150, 150,  14, 150, 150, 150, 150, 150,
-         150,  10, 150,  10,  10, 150, 150, 150,   8, 150, 150, 150, 150, 150,
-         150,  44, 150, 150,   5, 150, 150, 129, 150, 150, 150, 150, 150, 150,
-         150, 150, 150, 124,  10, 150,   0(类别从0开始计算), 150, 150,  10, 150, 150, 150, 150,
-         150, 150, 150, 150, 150, 150,   8, 150, 150, 150, 150, 150, 150,  28,
-         150, 150, 150,  71, 150, 150, 150, 150,   3, 150, 150, 150, 150, 150,
-         150, 150, 150, 150, 150, 150, 150, 150, 150,  14, 150, 150, 150,   8,
-         150, 150]], device='cuda:0')
-
-        """
 
         # if src_logits.shape[2] == self.num_classes+1:
         #     empty_weight = torch.ones(self.num_classes + 1).to(src_logits.device).type(self.empty_weight.dtype)
@@ -261,7 +250,6 @@ class SetCriterion(nn.Module):
         vtk_emb = outputs['pred_captions'][:,:-1]  # (B, 100, C)
         keep = torch.cat([x['caption_mask'] for x in targets], dim=0).bool()  # (B, text_len)
 
-        # 标准化操作，即将它们的每个元素除以对应位置的范数，从而使得这些向量的范数变为1
         ttk_emb = ttk_emb / (ttk_emb.norm(dim=-1, keepdim=True) + 1e-7)  # (B, text_len, C)
 
         vtk_emb = vtk_emb / (vtk_emb.norm(dim=-1, keepdim=True) + 1e-7)  # (B, 100, C)
@@ -271,18 +259,7 @@ class SetCriterion(nn.Module):
         logit_scale = extra['lang_encoder'].logit_scale.exp().clamp(max=100)
 
         # prepare gt
-        # Contrastive Loss, 对角矩阵
-        """
-        gt -> tensor([[1., 2., 3., 4., 5., 6., 7., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-         0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-        [0., 0., 0., 0., 0., 0., 0., 1., 2., 3., 4., 5., 6., 7., 0., 0., 0., 0.,
-         0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.],
-        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 2., 3., 4.,
-         5., 6., 7., 8., 9., 0., 0., 0., 0., 0., 0.],
-        [0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-         0., 0., 0., 0., 0., 1., 2., 3., 4., 5., 6.]], device='cuda:0')
-
-        """
+        # Contrastive Loss,
         gt = (torch.eye(vtk_emb.shape[0]).type_as(ttk_mask).unsqueeze(-1) * ttk_mask.unsqueeze(0).repeat(vtk_emb.shape[0], 1, 1))[:,keep].flatten(1)
         gt = gt / (gt.sum(1, keepdim=True) + 1e-7)  # (B, keep_num)
         # compute i2t loss  (B, 100, C) @ (keep_num, C)^T

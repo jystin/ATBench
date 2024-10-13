@@ -21,8 +21,6 @@ class Trie:
         for c in word:
             cur = cur.child[c]
 
-    # 综上所述，get_next_layer方法用于在字典树中找到以word为前缀的单词，并返回这些单词对应的节点索引列表。
-    # 在上述代码中，self.eos用于表示结束标记（即EOS索引），它会被添加到返回的索引列表中，以表示没有匹配的下一层节点。
     def get_next_layer(self, word):
         cur = self.root
         for c in word:

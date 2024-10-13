@@ -306,7 +306,7 @@ def _train_loader_from_config(cfg, dataset_name, mapper, *, dataset=None, sample
     }
 
 
-@configurable(from_config=_train_loader_from_config)  # 用这个函数给他提供参数
+@configurable(from_config=_train_loader_from_config) 
 def build_detection_train_loader(
         dataset, *, mapper, sampler=None, total_batch_size, aspect_ratio_grouping=True, num_workers=0
 ):
@@ -340,8 +340,6 @@ def build_detection_train_loader(
     if isinstance(dataset, list):
         dataset = DatasetFromList(dataset, copy=False)
     if mapper is not None:
-        # 将['file_name', 'image_id', 'captions', 'grounding_info', 'pan_seg_file_name', 'sem_seg_file_name', 'segments_info']
-        # 这些json文件转化为可训练的数据，例如从路径加载图片并进行数据增强等等
         dataset = MapDataset(dataset, mapper)
     if sampler is None:
         sampler = TrainingSampler(len(dataset))
@@ -486,7 +484,7 @@ def create_dataset(cfg, dataset_mapper, is_train=True, task_name=None):
             dataset = dataset_mapper(cfg, dataset_name, is_train=is_train)
     return dataset
 
-def build_train_dataloader(cfg, ):
+def build_train_dataloader(cfg):
     task_names = cfg['DATASETS']['TRAIN']
 
     loaders = {}

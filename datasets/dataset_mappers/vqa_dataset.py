@@ -37,7 +37,7 @@ class VQADataset(Dataset):
         self.image_format = cfg['INPUT']['FORMAT']
         self.max_token_num = cfg['MODEL']['TEXT']['CONTEXT_LENGTH']
         self.tokenizer = build_tokenizer(cfg['MODEL']['TEXT'])
-        self.pre_vocabs_path = cfg['INPUT']['PATH_VOCABS']
+        # self.pre_vocabs_path = cfg['INPUT']['PATH_VOCABS']
 
         self.info = self.load_dataset(self.dataset_name)
         self.tfm_gens = self.build_transform_gen(cfg, is_train)
@@ -60,15 +60,15 @@ class VQADataset(Dataset):
         with PathManager.open(os.path.join(root, annotation_file), "r") as f:
             annos = json.load(f)
 
-        pre_vocab_path = os.path.join(root, self.pre_vocabs_path )
-        pre_vocab = self.get_vocab(pre_vocab_path)
+        # pre_vocab_path = os.path.join(root, self.pre_vocabs_path )
+        # pre_vocab = self.get_vocab(pre_vocab_path)
 
         split = dataset_name.split("_")[-1]
 
 
         dataset_info = {
                 "split": split,
-                "pre_vocabs": pre_vocab,
+                # "pre_vocabs": pre_vocab,
                 "image_root": os.path.join(root, image_root),
                 "annotation_file": os.path.join(root, annotation_file),
                 "annos": annos}
@@ -117,8 +117,8 @@ class VQADataset(Dataset):
 
         answer = find_most_common_answer(anno["answers"])
         answer = pre_answers_vizwiz(answer)
-        if self.info["pre_vocabs"].get(answer) is None:
-            answer = "unanswerable"
+        # if self.info["pre_vocabs"].get(answer) is None:
+        #     answer = "unanswerable"
         answerable = anno["answerable"]
         answer_type = anno["answer_type"]
         dataset_dict["answers"] = [answer],

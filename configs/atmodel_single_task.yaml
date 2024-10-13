@@ -276,7 +276,7 @@ VIZWIZ_VQA:
     EVALUATOR_TYPE: "vqa"
     SIZE_DIVISIBILITY: 32
     FORMAT: "RGB"
-    PATH_VOCABS: "vqa_datasets/vizwiz/prepro_data/vocabs_all.json"
+    # PATH_VOCABS: "vqa_datasets/vizwiz/prepro_data/vocabs_all.json"
   TRAIN:
     BATCH_SIZE_TOTAL: 2
     BATCH_SIZE_PER_GPU: 2
@@ -320,8 +320,10 @@ NYU_V2:
 OCR:
   MULTI_DATASETS: True
   TRAIN_DATASET_NAME: [
+    "mj_train",
     "mj_val",
-    "mj_test",]
+    "mj_test",
+    "st_train"]
   TEST_DATASET_NAME: [
     "iiit50_3000",
     "svt",

@@ -5,7 +5,7 @@ SAVE_DIR: "./save_dir"
 base_path: "./"
 
 # Resume Logistic
-RESUME: false
+RESUME: false 
 WEIGHT: false
 RESET_DATA_LOADER: false
 RESUME_FROM: ''
@@ -167,8 +167,8 @@ DATALOADER:
 # Detectron2 training config for optimizer and lr scheduler
 SOLVER:
   BASE_LR: 0.0001
-  STEPS: [0.6, 0.8]  # 为LR_SCHEDULER服务
-#  STEPS: [0.88889, 0.96296]  # 为LR_SCHEDULER服务
+  STEPS: [0.6, 0.8]  
+#  STEPS: [0.88889, 0.96296]  
   MAX_ITER: 1
   GAMMA: 0.1
   WARMUP_FACTOR: 1.0
@@ -179,7 +179,7 @@ SOLVER:
   POLY_LR_POWER: 0.9
   POLY_LR_CONSTANT_ENDING: 0.0
   LR_SCHEDULER_NAME: "WarmupMultiStepLR"
-  LR_MULTIPLIER:  # 乘子 * BASE_LR
+  LR_MULTIPLIER:  # factor * BASE_LR
     backbone: 0.1
     lang_encoder: 0.1
   WEIGHT_DECAY_NORM: 0.0
@@ -274,7 +274,7 @@ VIZWIZ_VQA:
     EVALUATOR_TYPE: "vqa"
     SIZE_DIVISIBILITY: 32
     FORMAT: "RGB"
-    PATH_VOCABS: "vqa_datasets/vizwiz/prepro_data/vocabs_all.json"
+    # PATH_VOCABS: "vqa_datasets/vizwiz/prepro_data/vocabs_all.json"
   TRAIN:
     BATCH_SIZE_TOTAL: 2
     BATCH_SIZE_PER_GPU: 2
@@ -320,7 +320,8 @@ OCR:
   TRAIN_DATASET_NAME: [
     "mj_train",
     "mj_val",
-    "mj_test",]
+    "mj_test",
+    "st_train"]
   TEST_DATASET_NAME: [
     "iiit50_3000",
     "svt",

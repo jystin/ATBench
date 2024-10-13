@@ -106,7 +106,10 @@ Please follow the [ABINet](https://github.com/FangShancheng/ABINet) to download 
         └── SVTP/
         └── IC13_857/
         └── IC15_1811/
-        └── CUTE80
+        └── CUTE80/
+    └── data/
+        ├── charset_vn.txt
+
 ```
 
 
