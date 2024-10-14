@@ -1,14 +1,25 @@
-# @BENCH: Benchmarking Vision-Language Models for Human-centered Assistive Technology
-\[[Project](https://junweizheng93.github.io/publications/ATBench/ATBench.html)\]\[[Paper](https://arxiv.org/abs/2409.14215)\]
+# @BENCH: Benchmarking Vision-Language Models for Human-centered Assistive Technology (WACV 2025)
 
-by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu*](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger;](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en) in WACV 2025
+by Xin Jiang*, [Junwei Zheng*](https://junweizheng93.github.io/), [Ruiping Liu](https://scholar.google.com/citations?user=tJYUHDgAAAAJ&hl=zh-CN), [Jiahang Li](https://www.researchgate.net/profile/Jiahang-Li), [Jiaming Zhang&dagger;](https://jamycheung.github.io/), [Sven Matthiesen](https://scholar.google.com/citations?user=75P3ny0AAAAJ&hl=de), [Rainer Stiefelhagen](https://scholar.google.com/citations?user=SFCOJxMAAAAJ&hl=en)
 
 \* denotes equal contribution and &dagger; denotes corresponding author 
+
+<p align="center">
+<a href="https://arxiv.org/pdf/2409.14215">
+    <img src="https://img.shields.io/badge/arXiv-2409.14215-red" /></a>
+<a href="https://junweizheng93.github.io/publications/ATBench/ATBench.html">
+    <img src="https://img.shields.io/badge/Project-page-green" /></a>
+<a href="https://pytorch.org/">
+    <img src="https://img.shields.io/badge/Framework-PyTorch-orange.svg" /></a>
+<a href="https://github.com/jystin/ATBench/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" /></a>
+</p>
+
 
 ## News
 
 * **[2024.09.17]** ATBench (Assistive Technology Benchmark) is accepted to WACV2025.
-* **[2024.09.17]** We are excited to release ATModel (Assistive Technology Model) training code ([INSTALL.md](asset/INSTALL.md), [DATASET.md](asset/DATASET.md), [TRAIN.md](asset/TRAIN.md), [EVALUATION.md](asset/EVALUATION.md))
+* **[2024.10.13]** We are excited to release ATModel (Assistive Technology Model) training code ([INSTALL.md](asset/INSTALL.md), [DATASET.md](asset/DATASET.md), [TRAIN.md](asset/TRAIN.md), [EVALUATION.md](asset/EVALUATION.md))
 
 <!-- <p align="center">
   <img src="/images/pipeline.png" width="90%" height="90%">
